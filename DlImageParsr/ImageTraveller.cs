@@ -4,10 +4,7 @@ using System.Text;
 
 namespace DlImageParsr
 {
-    class Program
+    public class ImageTraveller
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
