@@ -6,5 +6,6 @@ namespace DlImageParsr
 {
     public class ImageTraveller
     {
+
     }
 }
