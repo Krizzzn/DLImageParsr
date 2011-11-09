@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentAssertions;
+using FluentAssertions.Assertions;
 using Moq;
 using NUnit.Framework;
 using DlImageParsr;
@@ -185,7 +186,7 @@ namespace DlImageParsrTests
 
             var imageParser = new ImageParser(reader.Object);
             var pixels = imageParser.ReadDocument();
-            pixels.Should().HaveCount((c) => c >= 20 );
+            pixels.Should().HaveCount((c) => c >= 20);
         }
 
         [Test(Description = "Integration")]
@@ -202,6 +203,26 @@ namespace DlImageParsrTests
 
                 result.Y.Should().BeGreaterThan(45);
                 result.X.Should().BeGreaterThan(45);
+            }
+            finally {
+                bmp.Dispose();
+            }
+        }
+
+        [Test(Description = "Integration")]
+        public void ReadDocument__parses_images()
+        {
+            var bmp = new Bitmap("Testimages/testimage1.png");
+            try {
+                var imageRead = new ImageReader(bmp);
+                var imageParser = new ImageParser(imageRead);
+
+                IEnumerable<Pixel> pixels = null;
+
+                Action action = () => { pixels = imageParser.ReadDocument(); };
+                action.ExecutionTime().ShouldNotExceed(1.Seconds());
+
+                pixels.Should().HaveCount((c) => c > 200);
             }
             finally {
                 bmp.Dispose();

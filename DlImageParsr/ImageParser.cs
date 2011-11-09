@@ -17,7 +17,13 @@ namespace DlImageParsr
 
         public IEnumerable<Pixel> ReadDocument()
         {
-            return null;
+            List<Pixel> pixels = new List<Pixel>();
+            do {
+                var p = ReadCurrentRow();
+                pixels.Add(p);
+            } while (_reader.NextColumn());
+
+            return pixels;
         }
 
         public Pixel ReadCurrentRow()
