@@ -15,6 +15,11 @@ namespace DlImageParsr
             _lastMove = reader.NextRow;
         }
 
+        public IEnumerable<Pixel> ReadDocument()
+        {
+            return null;
+        }
+
         public Pixel ReadCurrentRow()
         {
             var firstPixelType = _reader.CurrentPixelType();
@@ -28,6 +33,12 @@ namespace DlImageParsr
                     break;
             }
             while (NextMove()());
+
+            while (_reader.CurrentPixelType() == PixelType.Ground) {
+                var hasRows = _reader.PrevRow();
+                if (!hasRows)
+                    break;
+            }
 
             return _reader.CurrentPixel;
         }

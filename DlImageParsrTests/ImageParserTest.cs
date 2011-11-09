@@ -103,7 +103,7 @@ namespace DlImageParsrTests
             var reader = new Mock<IImageReader>();
             reader.Setup(i => i.CurrentPixelType()).Returns(() => { return (called < 5) ? PixelType.Water : PixelType.Ground; });
             reader.Setup(i => i.NextRow()).Returns(() => { return called++ < 50; });
-            reader.Setup(i => i.PrevRow()).Returns(() => { return called++ < 50; });
+            reader.Setup(i => i.PrevRow()).Returns(() => { return false; });
             reader.Setup(i => i.CurrentPixel).Returns(p);
             reader.Setup(i => i.FrameHeight).Returns(50);
 
@@ -133,6 +133,59 @@ namespace DlImageParsrTests
 
             res.Should().Be(p);
             called.Should().BeGreaterThan(5);
+        }
+
+        [Test]
+        public void ReadCurrentRow__stops_loop_on_changeing_pixel_type_and_ends_on_a_water_type()
+        {
+            var p = new Pixel(50, 25);
+            var called = 0;
+            var reader = new Mock<IImageReader>();
+            reader.Setup(i => i.CurrentPixelType()).Returns(() => { return (called < 1) ? PixelType.Water : PixelType.Ground; });
+            reader.Setup(i => i.NextRow()).Returns(() => { called++; return true; });
+            reader.Setup(i => i.PrevRow()).Returns(() => { called--; return true; });
+            reader.Setup(i => i.FrameHeight).Returns(50);
+
+            var imageParser = new ImageParser(reader.Object);
+
+            var res = imageParser.ReadCurrentRow();
+
+            reader.Object.CurrentPixelType().Should().Be(PixelType.Water);
+        }
+
+        [Test]
+        public void ReadCurrentRow__stops_loop_on_changeing_pixel_type_trys_to_get_water_but_ends_if_PrevRow_returns_false()
+        {
+            var p = new Pixel(50, 25);
+            var called = 0;
+            var reader = new Mock<IImageReader>();
+            reader.Setup(i => i.CurrentPixelType()).Returns(() => { return (called < 1) ? PixelType.Water : PixelType.Ground; });
+            reader.Setup(i => i.NextRow()).Returns(() => { called++; return true; });
+            reader.Setup(i => i.PrevRow()).Returns(() => { return false; });
+            reader.Setup(i => i.FrameHeight).Returns(50);
+
+            var imageParser = new ImageParser(reader.Object);
+
+            var res = imageParser.ReadCurrentRow();
+
+            reader.Object.CurrentPixelType().Should().Be(PixelType.Ground);
+        }
+
+        [Test]
+        public void ReadDocument__loops_through_all_columns()
+        {
+            var columns = 0;
+            var called = 0;
+            var reader = new Mock<IImageReader>();
+            reader.Setup(i => i.CurrentPixelType()).Returns(() => { return (called % 5 == 1) ? PixelType.Water : PixelType.Ground; });
+            reader.Setup(i => i.NextRow()).Returns(() => { called++; return true; });
+            reader.Setup(i => i.PrevRow()).Returns(() => { called++; return true; });
+            reader.Setup(i => i.FrameHeight).Returns(50);
+            reader.Setup(i => i.NextColumn()).Returns(() => { return (columns++ < 20); });
+
+            var imageParser = new ImageParser(reader.Object);
+            var pixels = imageParser.ReadDocument();
+            pixels.Should().HaveCount((c) => c >= 20 );
         }
 
         [Test(Description = "Integration")]
