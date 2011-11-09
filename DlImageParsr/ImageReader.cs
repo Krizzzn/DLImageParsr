@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace DlImageParsr
 {
-    public class ImageReader
+    public class ImageReader : DlImageParsr.IImageReader
     {
         private Bitmap _image;
         private Func<int, int, PixelType> getPixelFromImage;
@@ -53,7 +53,7 @@ namespace DlImageParsr
             return true;
         }
 
-        public PixelType CurrentPixel()
+        public PixelType CurrentPixelType()
         {
             return getPixelFromImage(FrameX + CurrentColumn, FrameY + CurrentRow);
         }
@@ -65,6 +65,15 @@ namespace DlImageParsr
 
             CurrentRow--;
             return true;
+        }
+
+
+        public Pixel CurrentPixel
+        {
+            get
+            {
+                return new Pixel(FrameX + CurrentColumn, FrameY + CurrentRow);
+            }
         }
     }
 }

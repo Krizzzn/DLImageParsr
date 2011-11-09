@@ -109,18 +109,18 @@ namespace DlImageParsrTests
         }
 
         [Test]
-        public void CurrentPixel__returns_pixel_from_image()
+        public void CurrentPixelType__returns_pixel_from_image()
         {
             var called = false;
             var imageRead = new ImageReader((x, y) => { called = true; return PixelType.Ground; });
             imageRead.FrameHeight = 40;
 
-            imageRead.CurrentPixel().Should().Be(PixelType.Ground);
+            imageRead.CurrentPixelType().Should().Be(PixelType.Ground);
             called.Should().BeTrue();
         }
 
         [Test]
-        public void CurrentPixel__should_use_coordinate_system_to_pixel_receive()
+        public void CurrentPixelType__should_use_coordinate_system_to_pixel_receive()
         {
             var called = false;
             var imageRead = new ImageReader((x, y) => { called = (x == 10 && y == 15); return PixelType.Ground; });
@@ -128,12 +128,12 @@ namespace DlImageParsrTests
             imageRead.FrameY = 15;
             imageRead.FrameHeight = 40;
 
-            imageRead.CurrentPixel().Should().Be(PixelType.Ground);
+            imageRead.CurrentPixelType().Should().Be(PixelType.Ground);
             called.Should().BeTrue();
         }
 
         [Test]
-        public void CurrentPixel__should_add_coordinate_system_to_movement_for_pixel_receive()
+        public void CurrentPixelType__should_add_coordinate_system_to_movement_for_pixel_receive()
         {
             var called = false;
             var imageRead = new ImageReader((x, y) => { called = (x == 13 && y == 17); return PixelType.Ground; });
@@ -149,12 +149,12 @@ namespace DlImageParsrTests
             imageRead.NextColumn();
             imageRead.NextColumn();
 
-            imageRead.CurrentPixel().Should().Be(PixelType.Ground);
+            imageRead.CurrentPixelType().Should().Be(PixelType.Ground);
             called.Should().BeTrue();
         }
 
         [Test(Description = "Integration")]
-        public void CurrentPixel__receives_pixel_from_image_typed_as_water()
+        public void CurrentPixelType__receives_pixel_from_image_typed_as_water()
         {
             var bmp = new Bitmap("Testimages/testimage1.png");
             try {
@@ -163,7 +163,7 @@ namespace DlImageParsrTests
                 while (i++ < 50)
                     imageRead.NextColumn();
 
-                var result = imageRead.CurrentPixel();
+                var result = imageRead.CurrentPixelType();
 
                 imageRead.CurrentColumn.Should().BeGreaterThan(30);
                 result.Should().Be(PixelType.Water);
@@ -174,7 +174,7 @@ namespace DlImageParsrTests
         }
 
         [Test(Description = "Integration")]
-        public void CurrentPixel__receives_pixel_from_image_typed_as_ground()
+        public void CurrentPixelType__receives_pixel_from_image_typed_as_ground()
         {
             var bmp = new Bitmap("Testimages/testimage1.png");
             try {
@@ -183,7 +183,7 @@ namespace DlImageParsrTests
                 while (i++ < 42)
                     imageRead.NextRow();
 
-                var result = imageRead.CurrentPixel();
+                var result = imageRead.CurrentPixelType();
 
                 imageRead.CurrentRow.Should().BeGreaterThan(40);
                 result.Should().Be(PixelType.Ground);
@@ -194,7 +194,7 @@ namespace DlImageParsrTests
         }
 
         [Test(Description = "Integration")]
-        public void CurrentPixel__receives_pixel_from_image_typed_as_undefined()
+        public void CurrentPixelType__receives_pixel_from_image_typed_as_undefined()
         {
             var bmp = new Bitmap("Testimages/testimage1.png");
             try {
@@ -203,7 +203,7 @@ namespace DlImageParsrTests
                 imageRead.FrameX--;
                 imageRead.FrameY--;
 
-                var result = imageRead.CurrentPixel();
+                var result = imageRead.CurrentPixelType();
 
                 result.Should().Be(PixelType.undefined);
             }
@@ -213,13 +213,13 @@ namespace DlImageParsrTests
         }
 
         [Test(Description = "Integration")]
-        public void CurrentPixel__origin_of_coordinate_system_is_correct()
+        public void CurrentPixelType__origin_of_coordinate_system_is_correct()
         {
             var bmp = new Bitmap("Testimages/testimage1.png");
             try {
                 var imageRead = new ImageReader(bmp);
 
-                var result = imageRead.CurrentPixel();
+                var result = imageRead.CurrentPixelType();
 
                 imageRead.CurrentColumn.Should().Be(0);
                 imageRead.CurrentRow.Should().Be(0);
@@ -228,6 +228,28 @@ namespace DlImageParsrTests
             finally {
                 bmp.Dispose();
             }
+        }
+
+        [Test]
+        public void CurrentPixel__returns_current_position()
+        {
+            var imageRead = new ImageReader((x, y) => PixelType.undefined);
+            imageRead.FrameX = 10;
+            imageRead.FrameY = 15;
+            imageRead.FrameHeight = 40;
+            imageRead.FrameWidth = 40;
+
+            imageRead.NextRow();
+            imageRead.NextRow();
+
+            imageRead.NextColumn();
+            imageRead.NextColumn();
+            imageRead.NextColumn();
+
+            var result = imageRead.CurrentPixel;
+
+            result.X.Should().Be(13);
+            result.Y.Should().Be(17);
         }
     }
 }

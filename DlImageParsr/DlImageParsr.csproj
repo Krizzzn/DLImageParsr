@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IImageReader.cs" />
     <Compile Include="ImageReader.cs" />
-    <Compile Include="ImageTraveller.cs" />
+    <Compile Include="ImageParser.cs" />
+    <Compile Include="Pixel.cs" />
     <Compile Include="PixelType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
