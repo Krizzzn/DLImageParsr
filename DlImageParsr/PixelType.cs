@@ -8,7 +8,7 @@ namespace DlImageParsr
     public enum PixelType
     {
         undefined,
-        Water,
-        Ground
+        Water = 208,
+        Ground = 243
     }
 }
