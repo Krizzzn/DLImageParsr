@@ -10,6 +10,7 @@ namespace DlImageParsr
     {
         private Bitmap _image;
         private Func<int, int, PixelType> getPixelFromImage;
+        private bool _skipCurrentColumn;
 
         public ImageReader(Bitmap image)
         {
@@ -37,7 +38,7 @@ namespace DlImageParsr
 
         public bool NextRow()
         {
-            if (CurrentRow + 1 >= FrameHeight)
+            if (CurrentRow + 1 >= FrameHeight || _skipCurrentColumn)
                 return false;
 
             CurrentRow++;
@@ -50,12 +51,49 @@ namespace DlImageParsr
                 return false;
 
             CurrentColumn++;
+            PeekCurrentColumn();
+
             return true;
+        }
+
+        private void PeekCurrentColumn()
+        {
+            int peekPixelCount = 10;
+            if (FrameHeight < peekPixelCount)
+                peekPixelCount = FrameHeight;
+
+            var startPixel = (CurrentRow - (peekPixelCount / 2));
+            var endPixel = (CurrentRow + (peekPixelCount / 2));
+
+            while (startPixel < 0) {
+                startPixel++;
+                endPixel++;
+            }
+            while (endPixel >= FrameHeight) {
+                startPixel--;
+                endPixel--;
+            }
+
+            var foundValidPixel = false;
+            while (startPixel < endPixel && !foundValidPixel) {
+                if (GetPixelType(CurrentColumn, startPixel) != PixelType.undefined)
+                    foundValidPixel = true;
+                startPixel++;
+            }
+            _skipCurrentColumn = !foundValidPixel;
+        }
+
+        private PixelType GetPixelType(int x, int y)
+        {
+            if (_skipCurrentColumn)
+                return PixelType.Skip;
+
+            return getPixelFromImage(FrameX + x, FrameY + y);
         }
 
         public PixelType CurrentPixelType()
         {
-            return getPixelFromImage(FrameX + CurrentColumn, FrameY + CurrentRow);
+            return GetPixelType(CurrentColumn, CurrentRow);
         }
 
         public bool PrevRow()
@@ -72,6 +110,8 @@ namespace DlImageParsr
         {
             get
             {
+                if (_skipCurrentColumn)
+                    return new SkipPixel(FrameX + CurrentColumn, FrameY + CurrentRow);
                 return new Pixel(FrameX + CurrentColumn, FrameY + CurrentRow);
             }
         }

@@ -226,6 +226,24 @@ namespace DlImageParsrTests
             }
             finally {
                 bmp.Dispose();
+
+            }
+        }
+
+        [Test(Description = "Integration")]
+        public void ReadDocument__parses_images_contains_skip_pixels()
+        {
+            var bmp = new Bitmap("Testimages/testimage1.png");
+            try {
+                var imageRead = new ImageReader(bmp);
+                var imageParser = new ImageParser(imageRead);
+
+                IEnumerable<Pixel> pixels = imageParser.ReadDocument();
+
+                pixels.Should().Contain(pxl => pxl is SkipPixel);
+            }
+            finally {
+                bmp.Dispose();
             }
         }
     }

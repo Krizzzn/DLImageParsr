@@ -9,6 +9,7 @@ namespace DlImageParsr
     {
         undefined,
         Water = 208,
-        Ground = 243
+        Ground = 243,
+        Skip = 1000
     }
 }

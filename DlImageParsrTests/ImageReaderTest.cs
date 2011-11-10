@@ -251,5 +251,20 @@ namespace DlImageParsrTests
             result.X.Should().Be(13);
             result.Y.Should().Be(17);
         }
+
+        [Test]
+        public void NextColumn__Reads_Ahead_and_defines_a_column_as_skip_pixel()
+        {
+            var imageRead = new ImageReader((x, y) => PixelType.undefined);
+            imageRead.NextColumn();
+            imageRead.FrameHeight = 40;
+            imageRead.FrameWidth = 40;
+
+            imageRead.NextColumn();
+
+            imageRead.CurrentPixelType().Should().Be(PixelType.Skip);
+            imageRead.CurrentPixel.Should().BeOfType<SkipPixel>();
+            imageRead.NextRow().Should().BeFalse();
+        }
     }
 }

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace DlImageParsr
 {
-    public struct Pixel
+    public class Pixel
     {
-        public Pixel(int x, int y) : this()
+        public Pixel(int x, int y)
         {
             X = x;
             Y = y;
@@ -15,5 +15,12 @@ namespace DlImageParsr
 
         public int X { get; private set; }
         public int Y { get; private set; }
+    }
+
+    public class SkipPixel : Pixel
+    {
+        public SkipPixel(int x, int y)
+            : base(x, y)
+        {}
     }
 }
