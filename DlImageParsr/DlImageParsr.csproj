@@ -41,13 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Dive.cs" />
     <Compile Include="IImageReader.cs" />
     <Compile Include="ImageReader.cs" />
     <Compile Include="ImageParser.cs" />
+    <Compile Include="Model\IDiveRepository.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="PixelType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\Sample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

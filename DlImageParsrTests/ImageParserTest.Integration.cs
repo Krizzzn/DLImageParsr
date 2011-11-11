@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FluentAssertions;
 using FluentAssertions.Assertions;
+using FluentAssertions.Common;
 using Moq;
 using NUnit.Framework;
 using DlImageParsr;
