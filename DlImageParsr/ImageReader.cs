@@ -19,8 +19,8 @@ namespace DlImageParsr
 
             FrameX = 21;
             FrameY = 1;
-            FrameHeight = 300;
-            FrameWidth = 300;
+            FrameHeight = 375;
+            FrameWidth = 679;
         }
 
         public ImageReader(Func<int, int, PixelType> pixelReceiver)

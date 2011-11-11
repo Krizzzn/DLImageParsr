@@ -28,8 +28,15 @@ namespace DlImageParsr
 
         public Pixel ReadCurrentRow()
         {
-            var firstPixelType = _reader.CurrentPixelType();
             int loopCount = 0;
+
+            var firstPixelType = _reader.CurrentPixelType();
+            if (firstPixelType == PixelType.undefined) {
+                for (int i = 0; i < 5; i++)
+                    _reader.PrevRow();
+                firstPixelType = _reader.CurrentPixelType();
+            }
+
 
             do {
                 if (loopCount++ > _reader.FrameHeight * 2)
