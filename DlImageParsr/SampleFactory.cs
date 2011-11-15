@@ -8,17 +8,21 @@ namespace DlImageParsr
 {
     public class SampleFactory : ISampleFactory
     {
-        public SampleFactory(Dive dive) {
+        public SampleFactory(Dive dive)
+        {
             Dive = dive;
         }
 
-        public Dive Create(IEnumerable<Pixel> pixels)
+        public ProcessedDive Create(IEnumerable<Pixel> pixels)
         {
             List<Pixel> listOfPixels = pixels.ToList();
+            var pDive = new ProcessedDive(Dive);
 
-            RemoveLastPlainFromPixelList(listOfPixels);
+            var depthRes = GetDepthResolution(listOfPixels);
+            var timeRes = GetTimeResolution(listOfPixels);
 
-            return Dive;
+            listOfPixels.ConvertAll(pixel => new Sample(pixel.Y * depthRes, pixel.X * timeRes)).ForEach(pDive.Samples.Add);
+            return pDive;
         }
 
         public Dive Dive { get; set; }
@@ -29,14 +33,13 @@ namespace DlImageParsr
                 return;
 
             int foundindex = 0;
-            for (int i = 1; i < listOfPixels.Count; i++)
-            {
+            for (int i = 1; i < listOfPixels.Count; i++) {
                 if (listOfPixels[foundindex].Y != listOfPixels[i].Y)
                     foundindex = i;
             }
 
-            while (listOfPixels.Count > foundindex +1) {
-                listOfPixels.RemoveAt(listOfPixels.Count -1);
+            while (listOfPixels.Count > foundindex + 1) {
+                listOfPixels.RemoveAt(listOfPixels.Count - 1);
             }
         }
 
@@ -51,9 +54,11 @@ namespace DlImageParsr
             return Convert.ToInt32(Math.Round(inCentimeters));
         }
 
-        public int GetTimeResolution(List<Pixel> listOfPixels) {
+        public int GetTimeResolution(List<Pixel> listOfPixels)
+        {
             RemoveLastPlainFromPixelList(listOfPixels);
-            return 0;
+            return (int)Math.Round((float)this.Dive.DurationinSeconds / ((float)listOfPixels.Count - 1));
         }
     }
 }
+

@@ -8,6 +8,6 @@ namespace DlImageParsr
 {
     public interface ISampleFactory
     {
-        Dive Create(IEnumerable<Pixel> pixels);
+        ProcessedDive Create(IEnumerable<Pixel> pixels);
     }
 }

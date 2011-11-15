@@ -7,7 +7,8 @@ namespace DlImageParsr.Model
 {
     public class Dive
     {
-        public Dive(int id, int maxDepthInCentimeters, int durationInSeconds, string imagePath) { 
+        public Dive(int id, int maxDepthInCentimeters, int durationInSeconds, string imagePath)
+        {
             DiveLogId = id;
             DurationinSeconds = durationInSeconds;
             MaxDepthInCentimeters = maxDepthInCentimeters;
@@ -17,8 +18,6 @@ namespace DlImageParsr.Model
         public int DurationinSeconds { get; private set; }
 
         public int MaxDepthInCentimeters { get; private set; }
-
-        public List<Sample> Samples { get; private set; }
 
         public int DiveLogId { get; private set; }
 

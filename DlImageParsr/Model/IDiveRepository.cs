@@ -9,6 +9,6 @@ namespace DlImageParsr.Model
     {
         IEnumerable<Dive> LoadDives();
 
-        void SaveDive(Dive dive);
+        void SaveDive(ProcessedDive dive);
     }
 }

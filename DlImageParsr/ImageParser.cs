@@ -37,7 +37,6 @@ namespace DlImageParsr
                 firstPixelType = _reader.CurrentPixelType();
             }
 
-
             do {
                 if (loopCount++ > _reader.FrameHeight * 2)
                     throw new Exception("Infinite Loop Detected");

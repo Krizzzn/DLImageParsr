@@ -47,6 +47,7 @@
     <Compile Include="ImageReader.cs" />
     <Compile Include="ImageParser.cs" />
     <Compile Include="Model\IDiveRepository.cs" />
+    <Compile Include="Model\ProcessedDive.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="PixelType.cs" />
     <Compile Include="Program.cs" />
