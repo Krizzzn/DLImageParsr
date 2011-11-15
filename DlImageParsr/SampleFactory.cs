@@ -21,7 +21,9 @@ namespace DlImageParsr
             var depthRes = GetDepthResolution(listOfPixels);
             var timeRes = GetTimeResolution(listOfPixels);
 
-            listOfPixels.ConvertAll(pixel => new Sample(pixel.Y * depthRes, pixel.X * timeRes)).ForEach(pDive.Samples.Add);
+            var origin = listOfPixels[0];
+
+            listOfPixels.ConvertAll(pixel => new Sample((pixel.Y - origin.Y) * depthRes, (pixel.X - origin.X) * timeRes)).ForEach(pDive.Samples.Add);
             return pDive;
         }
 
@@ -38,9 +40,8 @@ namespace DlImageParsr
                     foundindex = i;
             }
 
-            while (listOfPixels.Count > foundindex + 1) {
+            while (listOfPixels.Count > foundindex + 1)
                 listOfPixels.RemoveAt(listOfPixels.Count - 1);
-            }
         }
 
         public int GetDepthResolution(List<Pixel> listOfPixels)
@@ -48,7 +49,8 @@ namespace DlImageParsr
             if (listOfPixels == null || listOfPixels.Count == 0)
                 return -1;
 
-            var maxDepthInPixels = listOfPixels.Max(p => p.Y);
+            var origin = listOfPixels[0];
+            var maxDepthInPixels = listOfPixels.Max(p => p.Y - origin.Y);
 
             var inCentimeters = ((float)Dive.MaxDepthInCentimeters / (float)maxDepthInPixels);
             return Convert.ToInt32(Math.Round(inCentimeters));

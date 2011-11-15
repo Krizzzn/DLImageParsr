@@ -89,12 +89,23 @@ namespace DlImageParsrTests
         [Test]
         public void GetDepthResolution__returns_correct_value_with_rounding_down()
         {
-            var pixel = (new[] { new Pixel(1, 1), new Pixel(2, 21), new Pixel(3, 15), new Pixel(4, 10), new Pixel(5, 1), new Pixel(6, 1), new Pixel(7, 1), new Pixel(8, 1) }).ToList();
+            var pixel = (new[] { new Pixel(0, 0), new Pixel(2, 21), new Pixel(3, 15), new Pixel(4, 10), new Pixel(5, 1), new Pixel(6, 1), new Pixel(7, 1), new Pixel(8, 1) }).ToList();
             var dive = new Dive(2, 30, 2, "image");
             var fac = new DlImageParsr.SampleFactory(dive);
             var ret1 = fac.GetDepthResolution(pixel);
 
             ret1.Should().Be(1);
+        }
+
+        [Test]
+        public void GetDepthResolution__uses_origin_and_returns_correct_value()
+        {
+            var pixel = (new[] { new Pixel(51, 71), new Pixel(52, 73), new Pixel(53, 75), new Pixel(54, 80), new Pixel(55, 71), new Pixel(56, 71), new Pixel(57, 71), new Pixel(58, 71) }).ToList();
+            var dive = new Dive(2, 30, 2, "image");
+            var fac = new DlImageParsr.SampleFactory(dive);
+            var ret1 = fac.GetDepthResolution(pixel);
+
+            ret1.Should().Be(3);
         }
 
         [Test]
@@ -162,6 +173,32 @@ namespace DlImageParsrTests
         {
             var dive = new Dive(1, 400, 400, "image");
             var pixel = (new[] { new Pixel(0, 0), new Pixel(1, 2), new Pixel(2, 4), new Pixel(3, 4), new Pixel(4, 0) }).ToList();
+
+            var fac = new DlImageParsr.SampleFactory(dive);
+
+            var processedDive = fac.Create(pixel);
+
+            processedDive.Samples[0].Depth.Should().Be(0);
+            processedDive.Samples[0].SecondsSinceStart.Should().Be(0);
+
+            processedDive.Samples[1].Depth.Should().Be(200);
+            processedDive.Samples[1].SecondsSinceStart.Should().Be(100);
+
+            processedDive.Samples[2].Depth.Should().Be(400);
+            processedDive.Samples[2].SecondsSinceStart.Should().Be(200);
+
+            processedDive.Samples[3].Depth.Should().Be(400);
+            processedDive.Samples[3].SecondsSinceStart.Should().Be(300);
+
+            processedDive.Samples[4].Depth.Should().Be(0);
+            processedDive.Samples[4].SecondsSinceStart.Should().Be(400);
+        }
+
+        [Test]
+        public void Create__using_first_pixel_as_origin_and_returns_samples_having_correct_values()
+        {
+            var dive = new Dive(1, 400, 400, "image");
+            var pixel = (new[] { new Pixel(70, 50), new Pixel(71, 52), new Pixel(72, 54), new Pixel(73, 54), new Pixel(74, 50) }).ToList();
 
             var fac = new DlImageParsr.SampleFactory(dive);
 
