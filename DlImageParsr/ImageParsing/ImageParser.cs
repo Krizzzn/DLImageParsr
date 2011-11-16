@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using DlImageParsr.Contracts;
 using DlImageParsr.Model;
+using System.Drawing;
 
 namespace DlImageParsr.ImageParsing
 {
@@ -65,6 +66,17 @@ namespace DlImageParsr.ImageParsing
                 _lastMove = _reader.PrevRow;
 
             return _lastMove;
+        }
+
+        public static IImageParser GetImageParserForDive(Dive dive)
+        {
+            if (dive == null)
+                throw new ArgumentNullException("dive");
+
+            var bmp = new Bitmap(dive.ImagePath);
+            var imageReader = new ImageReader(bmp);
+
+            return new ImageParser(imageReader);
         }
     }
 }

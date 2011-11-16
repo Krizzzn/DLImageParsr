@@ -58,9 +58,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageReaderTest.Integration.cs" />
     <Compile Include="ImageParserTest.Integration.cs" />
     <Compile Include="ImageParserTest.cs" />
     <Compile Include="ImageReaderTest.cs" />
+    <Compile Include="MachineTest.cs" />
     <Compile Include="Model\ProcessedDiveTest.cs" />
     <Compile Include="SampleFactoryTest.cs" />
   </ItemGroup>

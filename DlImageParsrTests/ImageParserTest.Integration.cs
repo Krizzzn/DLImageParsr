@@ -150,6 +150,23 @@ namespace DlImageParsrTests.Integration
             }
         }
 
+        [Test]
+        public void GetImageParserForDive__throws_on_null()
+        {
+            Action a = () => { ImageParser.GetImageParserForDive(null); };
+
+            a.ShouldThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void GetImageParserForDive__gets_valid_parser_for_dive()
+        {
+            Dive d = new Dive(1, 2, 3, "Testimages/outputimage.3.bmp");
+
+            var result = ImageParser.GetImageParserForDive(d);
+            throw new Exception("Please dispose the bitmap");
+            result.Should().NotBeNull();
+        }
 
     }
 }
