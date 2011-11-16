@@ -8,6 +8,9 @@ using Moq;
 using NUnit.Framework;
 using DlImageParsr;
 using System.Drawing;
+using DlImageParsr.Contracts;
+using DlImageParsr.ImageParsing;
+using DlImageParsr.Model;
 
 namespace DlImageParsrTests
 {

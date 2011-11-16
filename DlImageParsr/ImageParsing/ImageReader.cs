@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using DlImageParsr.Contracts;
+using DlImageParsr.Model;
 
-namespace DlImageParsr
+namespace DlImageParsr.ImageParsing
 {
-    public class ImageReader : DlImageParsr.IImageReader
+    public class ImageReader : IImageReader
     {
         private Bitmap _image;
         private Func<int, int, PixelType> getPixelFromImage;

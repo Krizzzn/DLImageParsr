@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DlImageParsr.Model;
 
-namespace DlImageParsr
+namespace DlImageParsr.Contracts
 {
     public interface IImageReader
     {

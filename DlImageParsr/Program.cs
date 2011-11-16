@@ -8,6 +8,7 @@ namespace DlImageParsr
     {
         static void Main(string[] args)
         {
+            
         }
     }
 }

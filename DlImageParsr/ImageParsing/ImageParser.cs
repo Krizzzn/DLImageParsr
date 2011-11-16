@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DlImageParsr.Contracts;
+using DlImageParsr.Model;
 
-namespace DlImageParsr
+namespace DlImageParsr.ImageParsing
 {
-    public class ImageParser
+    public class ImageParser : IImageParser
     {
         private IImageReader _reader;
         private Func<bool> _lastMove;

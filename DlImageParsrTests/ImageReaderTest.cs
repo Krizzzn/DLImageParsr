@@ -5,6 +5,8 @@ using NUnit.Framework;
 using FluentAssertions;
 using DlImageParsr;
 using System.Drawing;
+using DlImageParsr.ImageParsing;
+using DlImageParsr.Model;
 
 namespace DlImageParsrTests
 {
