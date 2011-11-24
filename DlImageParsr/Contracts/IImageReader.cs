@@ -5,7 +5,7 @@ using DlImageParsr.Model;
 
 namespace DlImageParsr.Contracts
 {
-    public interface IImageReader
+    public interface IImageReader : IDisposable
     {
         PixelType CurrentPixelType();
         Pixel CurrentPixel { get; }

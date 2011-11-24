@@ -164,8 +164,10 @@ namespace DlImageParsrTests.Integration
             Dive d = new Dive(1, 2, 3, "Testimages/outputimage.3.bmp");
 
             var result = ImageParser.GetImageParserForDive(d);
-            throw new Exception("Please dispose the bitmap");
+
             result.Should().NotBeNull();
+
+            result.Dispose();
         }
 
     }

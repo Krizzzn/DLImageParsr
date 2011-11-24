@@ -8,7 +8,7 @@ using DlImageParsr.Model;
 
 namespace DlImageParsr.ImageParsing
 {
-    public class ImageReader : IImageReader
+    public class ImageReader : IImageReader, IDisposable
     {
         private Bitmap _image;
         private Func<int, int, PixelType> getPixelFromImage;
@@ -115,6 +115,18 @@ namespace DlImageParsr.ImageParsing
                 if (_skipCurrentColumn)
                     return new SkipPixel(FrameX + CurrentColumn, FrameY + CurrentRow);
                 return new Pixel(FrameX + CurrentColumn, FrameY + CurrentRow);
+            }
+        }
+
+        public void Dispose()
+        {
+            lock (this)
+            {
+                if (this._image != null)
+                {
+                    this._image.Dispose();
+                    this._image = null;
+                }
             }
         }
     }
