@@ -37,7 +37,7 @@ namespace DlImageParsrTests.Integration
         }
 
         [Test(Description = "Integration")]
-        public void ReadDocument__parses_images()
+        public void ReadDocument__parses_images_in_time()
         {
             var bmp = new Bitmap("Testimages/testimage1.png");
             try {

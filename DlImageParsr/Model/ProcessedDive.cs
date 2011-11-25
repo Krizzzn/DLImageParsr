@@ -14,5 +14,7 @@ namespace DlImageParsr.Model
         }
 
         public List<Sample> Samples { get; private set; }
+
+        public int SampleRateInSeconds { get; set; }
     }
 }
