@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using DlImageParsr.Contracts;
 using DlImageParsr.Model;
+using DlImageParsr.Filter;
 
 namespace DlImageParsr.Orchestration
 {
     public class Machine
     {
+        public Machine(IDiveRepository diveRepository) : this(diveRepository, new SampleFactory(), ImageParsing.ImageParser.GetImageParserForDive){
+            ((SampleFactory)this.SampleFactory).AddPostProcessing(new ReduceSamples());
+        }
+
         public Machine(IDiveRepository diveRepository, ISampleFactory sampleFactory, Func<Dive, IImageParser> parserFactoryMethod)
         {
             if (diveRepository == null)
@@ -47,7 +52,7 @@ namespace DlImageParsr.Orchestration
                     {
                         if (BeforeSavingDive != null) BeforeSavingDive(processesdDive);
  
-                        RaiseMessage(string.Format("Parsing Dive {0} with {1} samples", processesdDive.DiveLogId, processesdDive.Samples.Count));
+                        RaiseMessage(string.Format("Returned Dive {0} with {1} samples", processesdDive.DiveLogId, processesdDive.Samples.Count));
                         DiveRepository.SaveDive(processesdDive);
                     }
                 }

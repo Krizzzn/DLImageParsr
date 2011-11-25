@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlImageParsr", "DlImageParsr\DlImageParsr.csproj", "{5480A0D9-8815-4B43-AA88-28EC543CF19D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlImageParsrTests", "DlImageParsrTests\DlImageParsrTests.csproj", "{B025A7B3-E5D2-459C-80A5-BF91A3617CB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DlImageParsrConsole", "DlImageParsrConsole\DlImageParsrConsole.csproj", "{77F784D8-26D8-4BD1-AD01-B923C84E1441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +21,10 @@ Global
 		{B025A7B3-E5D2-459C-80A5-BF91A3617CB3}.Debug|x86.Build.0 = Debug|x86
 		{B025A7B3-E5D2-459C-80A5-BF91A3617CB3}.Release|x86.ActiveCfg = Release|x86
 		{B025A7B3-E5D2-459C-80A5-BF91A3617CB3}.Release|x86.Build.0 = Release|x86
+		{77F784D8-26D8-4BD1-AD01-B923C84E1441}.Debug|x86.ActiveCfg = Debug|x86
+		{77F784D8-26D8-4BD1-AD01-B923C84E1441}.Debug|x86.Build.0 = Debug|x86
+		{77F784D8-26D8-4BD1-AD01-B923C84E1441}.Release|x86.ActiveCfg = Release|x86
+		{77F784D8-26D8-4BD1-AD01-B923C84E1441}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
