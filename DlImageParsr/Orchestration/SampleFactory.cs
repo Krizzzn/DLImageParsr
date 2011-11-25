@@ -10,7 +10,9 @@ namespace DlImageParsr.Orchestration
     public class SampleFactory : ISampleFactory
     {
         public SampleFactory()
-        { }
+        {
+            this._postProcessingFilters = new List<IPostProcessing>();
+        }
 
         public ProcessedDive Create(IEnumerable<Pixel> pixels, Dive dive)
         {
@@ -23,6 +25,9 @@ namespace DlImageParsr.Orchestration
             var origin = listOfPixels[0];
             listOfPixels.RemoveAll(p => p is SkipPixel);
             listOfPixels.ConvertAll(pixel => new Sample((pixel.Y - origin.Y) * depthRes, (pixel.X - origin.X) * timeRes)).ForEach(pDive.Samples.Add);
+
+            PostProcessingFilters.ToList().ForEach(p => { p.Process(pDive); });
+
             return pDive;
         }
 
@@ -57,6 +62,17 @@ namespace DlImageParsr.Orchestration
         {
             RemoveLastPlainFromPixelList(listOfPixels);
             return (int)Math.Round((float)dive.DurationinSeconds / ((float)listOfPixels.Count - 1));
+        }
+
+        private List<IPostProcessing> _postProcessingFilters;
+        public IEnumerable<IPostProcessing> PostProcessingFilters
+        {
+            get { return _postProcessingFilters; }
+        }
+
+        public void AddPostProcessing(IPostProcessing postProcessing)
+        {
+            this._postProcessingFilters.Add(postProcessing);
         }
     }
 }

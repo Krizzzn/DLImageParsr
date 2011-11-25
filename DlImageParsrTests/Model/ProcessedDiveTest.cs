@@ -46,5 +46,40 @@ namespace DlImageParsrTests.Model
 
             proc.Samples.Should().NotBeNull();
         }
+
+        [Test]
+        public void SampleRateInSeconds__calculates_sample_rate()
+        {
+            var dive = new Dive(1, 233, 300, "Testimages/outputimage.8.bmp");
+
+            var proc = new ProcessedDive(dive);
+            proc.Samples.AddRange(new[] { new Sample(100, 222), new Sample(50, 222), new Sample(100, 222), new Sample(50, 222), new Sample(100, 222), new Sample(50, 222) });
+
+            proc.SampleRateInSeconds.Should().Be(50);
+        }
+
+        [Test]
+        public void SampleRateInSeconds__updates_sample_rate()
+        {
+            var dive = new Dive(1, 233, 300, "Testimages/outputimage.8.bmp");
+
+            var proc = new ProcessedDive(dive);
+            proc.Samples.AddRange(new[] { new Sample(100, 222), new Sample(50, 222), new Sample(100, 222), new Sample(50, 222), new Sample(100, 222), new Sample(50, 222) });
+
+            proc.SampleRateInSeconds.Should().Be(50);
+
+            proc.Samples.RemoveRange(0, 3);
+            proc.SampleRateInSeconds.Should().Be(100);
+        }
+
+        [Test]
+        public void SampleRateInSeconds__can_handle_no_samples() {
+            var dive = new Dive(1, 233, 300, "Testimages/outputimage.8.bmp");
+
+            var proc = new ProcessedDive(dive);
+
+            proc.SampleRateInSeconds.Should().Be(0);
+        }
+
     }
 }

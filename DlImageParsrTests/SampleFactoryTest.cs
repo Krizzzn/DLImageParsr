@@ -7,6 +7,8 @@ using FluentAssertions;
 using DlImageParsr;
 using DlImageParsr.Model;
 using DlImageParsr.Orchestration;
+using Moq;
+using DlImageParsr.Contracts;
 
 namespace DlImageParsrTests
 {
@@ -222,8 +224,9 @@ namespace DlImageParsrTests
         }
 
         [Test]
-        public void Create__remove_skip_pixels()
+        public void Create__calculate_average_for_skip_pixels()
         {
+            throw new NotImplementedException("implement");
             var dive = new Dive(1, 400, 400, "image");
             var pixel = (new[] { new Pixel(0, 0), new SkipPixel(1, 2), new SkipPixel(2, 4), new Pixel(3, 4), new Pixel(4, 0) }).ToList();
 
@@ -240,6 +243,50 @@ namespace DlImageParsrTests
 
             processedDive.Samples[2].Depth.Should().Be(0);
             processedDive.Samples[2].SecondsSinceStart.Should().Be(400);
+        }
+
+        [Test]
+        public void Create__runs_post_processing()
+        {
+            var dive = new Dive(1, 400, 400, "image");
+            var pixel = (new[] { new Pixel(0, 0), new SkipPixel(1, 2), new SkipPixel(2, 4), new Pixel(3, 4), new Pixel(4, 0) }).ToList();
+            var postProcess = new Mock<IPostProcessing>();
+
+            var fac = new SampleFactory();
+            fac.AddPostProcessing(postProcess.Object);
+
+            var processedDive = fac.Create(pixel, dive);
+
+            postProcess.Verify(pp => pp.Process(processedDive), Times.Once());
+        }
+
+        [Test]
+        public void Create__runs_mulitple_post_processing()
+        {
+            var dive = new Dive(1, 400, 400, "image");
+            var pixel = (new[] { new Pixel(0, 0), new SkipPixel(1, 2), new SkipPixel(2, 4), new Pixel(3, 4), new Pixel(4, 0) }).ToList();
+            var postProcess1 = new Mock<IPostProcessing>();
+            var postProcess2 = new Mock<IPostProcessing>();
+
+            var fac = new SampleFactory();
+            fac.AddPostProcessing(postProcess1.Object);
+            fac.AddPostProcessing(postProcess2.Object);
+
+            var processedDive = fac.Create(pixel, dive);
+
+            postProcess1.Verify(pp => pp.Process(processedDive), Times.Once());
+            postProcess2.Verify(pp => pp.Process(processedDive), Times.Once());
+        }
+
+        [Test]
+        public void AddPostProcessing__adds_post_processing()
+        {
+            var postProcessMock = new Mock<IPostProcessing>();
+            var postProcessObj = postProcessMock.Object;
+            var fac = new SampleFactory();
+            fac.AddPostProcessing(postProcessObj);
+
+            fac.PostProcessingFilters.Should().Contain(postProcessObj);
         }
     }
 }

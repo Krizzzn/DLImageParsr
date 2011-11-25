@@ -64,6 +64,7 @@
     <Compile Include="ImageReaderTest.cs" />
     <Compile Include="MachineTest.cs" />
     <Compile Include="Model\ProcessedDiveTest.cs" />
+    <Compile Include="ReduceSamplesTest.cs" />
     <Compile Include="SampleFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>

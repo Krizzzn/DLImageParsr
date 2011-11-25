@@ -9,5 +9,7 @@ namespace DlImageParsr.Contracts
     public interface ISampleFactory
     {
         ProcessedDive Create(IEnumerable<Pixel> pixels, Dive dive);
+
+        IEnumerable<IPostProcessing> PostProcessingFilters { get; }
     }
 }

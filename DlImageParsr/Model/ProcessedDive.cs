@@ -15,6 +15,10 @@ namespace DlImageParsr.Model
 
         public List<Sample> Samples { get; private set; }
 
-        public int SampleRateInSeconds { get; set; }
+        public int SampleRateInSeconds { get {
+            if (Samples.Count == 0)
+                return 0;
+            return DurationinSeconds / Samples.Count;
+        } }
     }
 }

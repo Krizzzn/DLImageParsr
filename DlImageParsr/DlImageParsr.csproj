@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IPostProcessing.cs" />
     <Compile Include="Contracts\ISampleFactory.cs" />
     <Compile Include="Contracts\IImageParser.cs" />
+    <Compile Include="PostProcessing\ReduceSamples.cs" />
     <Compile Include="Orchestration\Machine.cs" />
     <Compile Include="Model\Dive.cs" />
     <Compile Include="Contracts\IImageReader.cs" />
