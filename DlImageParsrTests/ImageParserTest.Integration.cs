@@ -122,7 +122,6 @@ namespace DlImageParsrTests.Integration
             }
         }
 
-
         [Test(Description = "Integration")]
         public void ReadDocument__edge_cases_edge_detection_2()
         {
@@ -162,10 +161,10 @@ namespace DlImageParsrTests.Integration
         public void GetImageParserForDive__gets_valid_parser_for_dive()
         {
             Dive d = new Dive(1, 2, 3, "Testimages/outputimage.3.bmp");
-
             var result = ImageParser.GetImageParserForDive(d);
-            throw new Exception("Please dispose the bitmap");
+
             result.Should().NotBeNull();
+            result.Dispose();
         }
 
     }

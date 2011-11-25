@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace DlImageParsr.ImageParsing
 {
-    public class ImageParser : IImageParser
+    public class ImageParser : IImageParser, IDisposable
     {
         private IImageReader _reader;
         private Func<bool> _lastMove;
@@ -77,6 +77,18 @@ namespace DlImageParsr.ImageParsing
             var imageReader = new ImageReader(bmp);
 
             return new ImageParser(imageReader);
+        }
+
+        public void Dispose()
+        {
+            lock (this)
+            {
+                if (_reader != null)
+                {
+                    _reader.Dispose();
+                    _reader = null;
+                }
+            }
         }
     }
 }
